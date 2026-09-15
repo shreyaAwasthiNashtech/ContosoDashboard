@@ -13,7 +13,8 @@ component, migration, or test-suite bodies.
 - Existing seeded users/project from
   `ContosoDashboard/Data/ApplicationDbContext.cs`.
 - No internet, Azure subscription, cloud identity, or malware service.
-- A backup/copy of the seeded LocalDB before migration tests.
+- An isolated database created from the seeded model for schema tests; do not
+  use the shared `ContosoDashboard` database for destructive test setup.
 
 ## Build and start
 
@@ -83,10 +84,13 @@ metadata insert, activity insert, and commit. Verify after each failure that:
 - no staging/final file from the batch remains (or reconciliation removes it);
 - the UI gives a recoverable retryable error.
 
-For migration safety, back up LocalDB, record counts/IDs for Users, Projects,
-ProjectMembers, Tasks, Notifications, and Announcements, run the reviewed
-initializer/idempotent script, and verify counts/IDs are unchanged. Only
-document tables, indexes/FKs, and migration history should be added.
+For migration safety, create an isolated seeded baseline database, record
+counts/IDs for Users, Projects, ProjectMembers, Tasks, Notifications, and
+Announcements, remove only the document tables to simulate the pre-feature
+baseline, run the actual `DocumentSchemaInitializer` twice, and verify the
+legacy counts/IDs are unchanged. Only document tables, indexes, and foreign
+keys should be added; the current initializer does not create EF migration
+history.
 
 ## Automated validation commands
 

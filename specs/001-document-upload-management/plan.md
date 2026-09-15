@@ -17,8 +17,9 @@ Files are stored outside `wwwroot` by an `IFileStorageService`; metadata is
 stored in SQL Server LocalDB through EF Core. Every document operation performs
 service-layer resource authorization in addition to page/endpoint authorization.
 The existing cookie-based mock authentication remains explicitly training-only.
-Database evolution uses additive EF migrations and a guarded baseline bootstrap
-so an already created/seeded LocalDB is never dropped or overwritten.
+Database evolution uses the guarded additive `DocumentSchemaInitializer`
+bootstrap currently wired into `Program.cs`, so an already created/seeded
+LocalDB is never dropped or overwritten.
 
 ## Technical Context
 
@@ -109,20 +110,18 @@ predicate before projection. Missing or stale project/user records deny access.
 databases may have data without `__EFMigrationsHistory`. Do not drop/recreate
 or apply a generated all-table initial migration directly to such a database.
 
-1. Capture a reviewed baseline migration/snapshot and add a separate
-   `DocumentSchema` migration whose `Up` creates only document tables, indexes,
-   and foreign keys to existing `Users`, `Projects`, and `Tasks`.
-2. Add a guarded initializer. On an existing database with expected legacy
-   tables but no migration history, create the history table if needed, mark
-   the reviewed baseline as applied without replaying legacy DDL, then apply
-   pending document migrations. A fresh database runs the full chain.
-3. Replace unconditional `EnsureCreated` only after scripts are reviewed.
-   Fail closed if the expected legacy shape is absent; never guess or delete.
-4. Test against a backup/copy of seeded LocalDB: legacy row counts and seed
-   IDs remain unchanged; only document tables/history/indexes/FKs are added.
+1. Preserve the existing `EnsureCreated` call for the legacy training baseline.
+2. Run the guarded `DocumentSchemaInitializer`, whose SQL creates only document
+   tables, indexes, and foreign keys when those tables are absent.
+3. Keep the initializer idempotent and fail explicitly if the expected legacy
+   tables are unavailable; never drop or replay legacy DDL.
+4. Validate against an isolated database created from the seeded model: capture
+   legacy row counts and seed IDs, remove only document tables to simulate the
+   pre-feature baseline, run the initializer twice, and confirm the legacy
+   rows/IDs are unchanged while document tables are added.
 
-An idempotent SQL script generated from the reviewed migration is the fallback
-for training machines without EF CLI.
+No EF migration history is created by the current implementation. A future
+formal migration must be reviewed separately before replacing this bootstrap.
 
 ## Constitution Check (post-design)
 
