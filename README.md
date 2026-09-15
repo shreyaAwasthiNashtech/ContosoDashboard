@@ -53,7 +53,7 @@ This application includes a **mock authentication system** designed for training
 
 ## Overview
 
-ContosoDashboard is built using ASP.NET Core 8.0 with Blazor Server and provides a centralized platform for:
+ContosoDashboard is built using ASP.NET Core 10.0 with Blazor Server and provides a centralized platform for:
 
 - Task management and tracking
 - Project oversight and collaboration
@@ -81,7 +81,7 @@ ContosoDashboard is built using ASP.NET Core 8.0 with Blazor Server and provides
 
 ### 🔧 Technical Stack
 
-- **Framework**: ASP.NET Core 8.0
+- **Framework**: ASP.NET Core 10.0
 - **UI**: Blazor Server
 - **Database**: SQL Server LocalDB with Entity Framework Core
 - **Authentication**: Cookie-based mock authentication for training (Azure AD/Microsoft Entra ID ready)
@@ -137,7 +137,7 @@ public interface IFileStorageService
 
 ### Prerequisites
 
-- .NET 8.0 SDK or later
+- .NET 10.0 SDK or later
 - SQL Server LocalDB
 - Visual Studio 2022 or Visual Studio Code
 
@@ -240,7 +240,7 @@ The default connection string in `appsettings.json` uses SQL Server LocalDB:
 
 ```json
 "ConnectionStrings": {
-  "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=ContosoDashboard;Trusted_Connection=True;MultipleActiveResultSets=true"
+  "DefaultConnection": "Server=(localdb)\\MSSQLLocalDB;Database=ContosoDashboard;Trusted_Connection=True;MultipleActiveResultSets=true"
 }
 ```
 
