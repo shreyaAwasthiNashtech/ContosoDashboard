@@ -1,10 +1,10 @@
 ﻿<!--
 Sync Impact Report
-- Version change: 0.0.0 -> 1.0.0
-- Modified principles: initial constitution established for the repository
-- Added sections: Quality, Security, Testing, Maintainability, Offline-First Training, Operational Constraints, Governance
+- Version change: 1.0.0 -> 1.1.0
+- Modified principles: Operational Constraints, Development Governance
+- Added sections: planned Document Upload and Management feature workflow requirements
 - Removed sections: none
-- Deferred items: TODO(RATIFICATION_DATE): original adoption date not recorded in repository.
+- Deferred items: application implementation remains deferred until the Spec Kit workflow produces an approved MVP plan and tasks.
 -->
 # ContosoDashboard Constitution
 
@@ -35,8 +35,8 @@ The following constraints are mandatory for this repository and supersede ad hoc
 - .NET 10 with Blazor Server is the supported training stack and must remain compatible with the LocalDB-based development workflow.
 - SQL Server LocalDB is the default development database and MUST remain usable without Azure or other external services.
 - The cookie-based mock authentication model is approved only for training and demo use; it must remain isolated from production assumptions and clearly labeled as non-production.
-- The document-management stakeholder requirements captured in StakeholderDocs are design inputs for future architecture, not an active product feature in this repository. No document-management implementation or document-storage workflow may be added to the training app without first following the repository's abstraction and governance requirements.
-- Any future document-related work MUST be implemented behind a storage abstraction, must validate file types and paths, must enforce authorization, and must remain compatible with local/offline operation before production migration.
+- Document Upload and Management is the planned feature for this assignment. It MUST be specified, clarified, planned, decomposed into tasks, and implemented as an MVP through the repository's Spec Kit workflows: specification, clarification, plan, tasks, and MVP implementation. Application code MUST NOT be added before the relevant workflow artifacts establish the approved scope and acceptance criteria.
+- Document Upload and Management MUST be implemented behind a storage abstraction, must validate file types and paths, must enforce authorization, and must remain compatible with local/offline operation before production migration. The initial implementation MUST use SQL Server LocalDB and local storage, while preserving a clean replacement path for future production storage services.
 - The codebase MUST avoid production-only assumptions such as hard-coded Azure services, password hashing implementations that are not part of the training flow, or external dependencies that break offline execution.
 
 ## Development Governance
@@ -46,6 +46,7 @@ The following governance rules govern all changes:
 - All work MUST remain consistent with the repository's training-first scope: local, offline, demonstrably teachable, and intentionally simplified for education.
 - All security-sensitive changes MUST be reviewed for access control, data isolation, and the mock-authentication boundary before merge.
 - All architectural changes that introduce infrastructure dependencies MUST identify the local implementation, the production replacement path, and the abstraction used to isolate the choice.
+- The planned Document Upload and Management feature MUST follow the Spec Kit sequence of specification, clarification, plan, tasks, and MVP implementation, with each stage reviewed before the next stage begins.
 - All commits and pull requests MUST describe whether the change affects training-only behavior, production migration readiness, or both.
 - Any feature proposal that moves beyond the training scope must be documented as a deferred design decision or future workstream instead of being implemented opportunistically.
 
@@ -62,4 +63,4 @@ The project follows semantic versioning for governance changes:
 
 All reviews MUST check whether the change preserves the training-only expectations, security posture, testability, and abstraction boundaries described in this Constitution. If a change cannot be validated locally, it must not be merged.
 
-**Version**: 1.0.0 | **Ratified**: TODO(RATIFICATION_DATE): original adoption date not recorded in repository | **Last Amended**: 2026-09-15
+**Version**: 1.1.0 | **Ratified**: 2026-09-15 | **Last Amended**: 2026-09-15
